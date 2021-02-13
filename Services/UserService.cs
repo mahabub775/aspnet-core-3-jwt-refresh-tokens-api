@@ -24,11 +24,11 @@ namespace WebApi.Services
 
     public class UserService : IUserService
     {
-        private DataContext _context;
+        private ApplicationDbContext _context;
         private readonly AppSettings _appSettings;
 
         public UserService(
-            DataContext context,
+            ApplicationDbContext context,
             IOptions<AppSettings> appSettings)
         {
             _context = context;
@@ -124,7 +124,7 @@ namespace WebApi.Services
                 {
                     new Claim(ClaimTypes.Name, user.Id.ToString())
                 }),
-                Expires = DateTime.UtcNow.AddMinutes(15),
+                Expires = DateTime.UtcNow.AddMinutes(2),//should be minimum 10 Minutes
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
